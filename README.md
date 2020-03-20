@@ -1,4 +1,4 @@
-# Sanic Current Exchange Rate Api
+# Sanic Currency Exchange Rates Api
 
 This is a self hosted, free, currency rate api, free demo at [exchange-rate.bai.uno](https://exchange-rate.bai.uno).
 
