@@ -71,8 +71,9 @@ fetch('https://api.exchangeratesapi.io/latest')
 This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
  but as a project, is seems like they have some outdated dependencies and hard to deploy.
  
- - sanic at original project is old, 0.8.x -- using the latest version instead
- - no specific version for packages -- using requirements.txt with version
+ - sanic at original project is old, 0.8.x => using the latest version instead
+ - no specific version for packages => using requirements.txt with version
+ - python 3.6 => python 3.7
  - hard to deploy, (easy to deploy to heroku but not other platform)
 
 ## Contributing
