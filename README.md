@@ -1,4 +1,5 @@
 # Sanic Currency Exchange Rates Api
+[![CodeFactor](https://www.codefactor.io/repository/github/tim-hub/sanic-currency-exchange-rates-api/badge)](https://www.codefactor.io/repository/github/tim-hub/sanic-currency-exchange-rates-api)
 
 This is a self hosted, free, currency rate api, free demo at [exchange-rate.bai.uno](https://exchange-rate.bai.uno).
 
