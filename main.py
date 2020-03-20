@@ -3,7 +3,7 @@ import itertools
 from datetime import datetime
 from decimal import Decimal
 from os import getenv
-from xml.etree import ElementTree
+from defusedxml import ElementTree
 
 import requests
 import ujson
@@ -296,4 +296,4 @@ app.static("/robots.txt", "./static/robots.txt")
 app.static("/favicon.ico", "./static/favicon.ico")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, workers=2)
