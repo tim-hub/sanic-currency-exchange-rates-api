@@ -293,7 +293,7 @@ async def index(request):
 # Static content
 app.static("/static", "./static")
 app.static("/robots.txt", "./static/robots.txt")
-app.static("/favicon.ico", "./static/favicon.ico")
+# app.static("/favicon.ico", "./static/favicon.ico")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, workers=2)
