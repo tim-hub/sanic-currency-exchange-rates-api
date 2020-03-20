@@ -1,9 +1,25 @@
 # Sanic Currency Exchange Rates Api
 [![CodeFactor](https://www.codefactor.io/repository/github/tim-hub/sanic-currency-exchange-rates-api/badge)](https://www.codefactor.io/repository/github/tim-hub/sanic-currency-exchange-rates-api)
 
-This is a self hosted, free, currency rate api, free demo at [exchange-rate.bai.uno](https://exchange-rate.bai.uno).
+This is a self hosted, free, currency exchange rate api, free demo at [exchange-rate.bai.uno](https://exchange-rate.bai.uno).
 
 The current and historical foreign exchange rates data are from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
+
+## Why a new frok
+This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
+ but as a project, is seems like they have some outdated dependencies (security issues) and difficulties to deploy.
+
+|                     | original                                | Sanic Currency Exchange Rates API |
+| ------------------- | --------------------------------------- | --------------------------------- |
+| sanic version       | 0.8.x                                   | latest/19.12.2                    |
+| python              | 3.6                                     | 3.7                               |
+| pin dependencies    | false                                   | true                              |
+| deploy to heroic    | one click                               | (can be too)                      |
+| deploy as container | (have to solve some dependencies first) | easy                              |
+| xml parser          | xml.etree                               | defusedxml                        |
+
+
+
 
 ## Usage
 
@@ -66,15 +82,6 @@ fetch('https://api.exchangeratesapi.io/latest')
   .then((data) => fx.rates = data.rates)
   .then(demo)
 ```
-
-# Why a new frok
-This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
- but as a project, is seems like they have some outdated dependencies and hard to deploy.
- 
- - sanic at original project is old, 0.8.x => using the latest version instead
- - no specific version for packages => using requirements.txt with version
- - python 3.6 => python 3.7
- - hard to deploy, (easy to deploy to heroku but not other platform)
 
 ## Contributing
 [contributing guide](CONTRIBUTING.md)
