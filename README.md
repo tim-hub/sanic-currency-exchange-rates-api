@@ -9,13 +9,13 @@ The current and historical foreign exchange rates data are from [European Centra
 This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
  but as a project, is seems like they have some outdated dependencies (security issues) and difficulties to deploy.
 
-|                     | original                                | Sanic Currency Exchange Rates API |
+|   Difference                  | Original                                |  Fork|
 | ------------------- | --------------------------------------- | --------------------------------- |
 | sanic version       | 0.8.x                                   | latest/19.12.2                    |
 | python              | 3.6                                     | 3.7                               |
 | pin dependencies    | false                                   | true                              |
 | deploy to heroic    | one click                               | (can be too)                      |
-| deploy as container | (have to solve some dependencies first) | easy                              |
+| deploy as container | got some problem | easy                              |
 | xml parser          | xml.etree                               | defusedxml                        |
 
 
