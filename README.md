@@ -75,7 +75,7 @@ This project is a fork from [ExchangeRatesApi project](https://github.com/exchan
  - hard to deploy, (easy to deploy to heroku but not other platform)
 
 ## Contributing
-
+[contributing guide](CONTRIBUTING.md)
 
 ## License
 MIT
