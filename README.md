@@ -5,6 +5,12 @@ This is a self hosted, free, currency exchange rate api, free demo at [exchange-
 
 The current and historical foreign exchange rates data are from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
 
+## How to
+Make sure docker is installed.
+
+- `git clone https://github.com/tim-hub/sanic-currency-exchange-rates-api`
+- run docker `docker build -t rate-api . && docker run --name rate-api -t -i -e DATABASE_URL=postgresql://dbuser:pwd@dburl:5432/dbname rate-api`
+
 ## Why a new frok
 This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
  but as a project, is seems like they have some outdated dependencies (security issues) and difficulties to deploy.
