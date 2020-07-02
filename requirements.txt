@@ -1,5 +1,5 @@
 sanic==19.12.2
-gino==0.8.6
+gino==1.0.1
 requests==2.23.0
 apscheduler==3.6.3
 defusedxml==0.6.0
