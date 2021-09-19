@@ -275,11 +275,52 @@ async def exchange_history(request):
 async def exchange_history(request):
     return await exchange_rates_history(request)
 
-
 # api.ExchangeratesAPI.io
 @app.route("/", methods=["GET"])
 async def index(request):
-    return json({"details": "https://tim.bai.uno/currency"}, escape_forward_slashes=False)
+    home = {
+        "help": {
+            {
+                "description": "Get the latest foreign exchange rates.",
+                "type": "GET",
+                "url": "/latest"
+            },
+            {
+                "description": "Get historical rates for any day since 1999-01-04.",
+                "type": "GET",
+                "url": "/2018-03-26"
+            },
+            {
+                "description": "Rates are quoted against the Euro by default. Quote against a different currency by setting the base parameter in your request.",
+                "type": "GET",
+                "url": "/latest?base=USD"
+            },
+            {
+                "description": "Request specific exchange rates by setting the symbols parameter.",
+                "type": "GET",
+                "url": "/latest?symbols=USD,GBP"
+            },
+            {
+                "description": "Get historical rates for a time period.",
+                "type": "GET",
+                "url": "/history?start_at=2018-01-01&end_at=2018-09-01"
+            },
+            {
+                "description": "Limit results to specific exchange rates to save bandwidth with the symbols parameter.",
+                "type": "GET",
+                "url": "/history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,JPY"
+            },
+            {
+                "description": "Quote the historical rates against a different currency.",
+                "type": "GET",
+                "url": "/history?start_at=2018-01-01&end_at=2018-09-01&base=USD"
+            }
+        },
+
+        "git_repo": "https://tim.bai.uno/currency"
+    }
+
+    return json(home, escape_forward_slashes=False)
 
 
 # Website
