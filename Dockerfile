@@ -11,4 +11,5 @@ ADD . .
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/sh", "-c" , "newrelic-admin run-program && python main.py"]
+RUN ["chmod", "+x", "infra/start.sh"]
+ENTRYPOINT ["infra/start.sh"]
