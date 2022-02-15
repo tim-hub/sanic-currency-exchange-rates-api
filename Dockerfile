@@ -11,4 +11,4 @@ ADD . .
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/sh", "-c" , "newrelic-admin run-program && python main.py"]
+CMD ["python", "main.py"]

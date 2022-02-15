@@ -1,6 +1,5 @@
-sanic==21.12.1
+sanic==19.12.2
 gino==1.0.1
-requests==2.27.1
-apscheduler==3.8.1
-defusedxml==0.7.1
-newrelic==7.4.0.172
+requests==2.23.0
+apscheduler==3.7.0
+defusedxml==0.6.0
