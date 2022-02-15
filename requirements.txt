@@ -3,3 +3,4 @@ gino==1.0.1
 requests==2.23.0
 apscheduler==3.7.0
 defusedxml==0.6.0
+newrelic==7.4.0.172
