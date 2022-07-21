@@ -322,19 +322,9 @@ async def index(request):
 
     return json(home, escape_forward_slashes=False)
 
-
-# Website
-# @app.route("/", methods=["GET", "HEAD"])
-# async def index(request):
-#     if request.method == "HEAD":
-#         return html("")
-#     return await file("./templates/index.html")
-
-
 # Static content
 app.static("/static", "./static")
 app.static("/robots.txt", "./static/robots.txt")
-# app.static("/favicon.ico", "./static/favicon.ico")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, workers=2)
