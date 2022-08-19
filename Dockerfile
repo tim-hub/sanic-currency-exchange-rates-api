@@ -7,7 +7,7 @@ RUN mkdir /exchange_api
 WORKDIR /exchange_api
 
 # Copying requirements
-ADD . .
+ADD src .
 
 RUN pip install -r requirements.txt
 

@@ -211,7 +211,7 @@ async def initialize_scheduler(app, loop):
     print('set up db')
     # Schedule exchangerate updates
     try:
-        _ = open("scheduler.lock", "w")
+        _ = open("../scheduler.lock", "w")
         fcntl.lockf(_.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
 
         scheduler = AsyncIOScheduler()
