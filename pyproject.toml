@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "currency-exchange-rate"
+version = "0.1.0"
+description = ""
+authors = ["tim-hub <tim-hub@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sanic = "22.6.2"
+gino = "1.0.1"
+requests = "2.28.1"
+APScheduler = "3.9.1"
+defusedxml = "0.7.1"
+newrelic = "8.0.0.179"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
