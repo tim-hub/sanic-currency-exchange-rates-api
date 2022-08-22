@@ -36,12 +36,7 @@ async def exchange_rates_history(request):
     else:
         return json({"error": "missing end_at parameter"})
 
-    exchange_rates = (
-        await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date >= start_at.date())
-        .where(GinoDBInstance.get_repo().date <= end_at.date())
-        .order_by(GinoDBInstance.get_repo().date.asc())
-        .gino.all()
-    )
+    exchange_rates = await GinoDBInstance.get_historic_rates(start_at, end_at)
 
     base = BASE_CURRENCY
     historic_rates = {}
@@ -57,7 +52,7 @@ async def exchange_rates_history(request):
                     currency: Decimal(rate) / base_rate
                     for currency, rate in rates.items()
                 }
-                rates["EUR"] = Decimal(1) / base_rate
+                rates[BASE_CURRENCY] = Decimal(1) / base_rate
             else:
                 return json(
                     {"error": "Base '{}' is not supported.".format(base)}, status=400
@@ -89,7 +84,7 @@ async def to_exchange_rates(request, date=None):
     if request.method == "HEAD":
         return json("")
 
-    dt = datetime.now()
+
     if date:
         try:
             dt = datetime.strptime(date, "%Y-%m-%d")
@@ -102,17 +97,14 @@ async def to_exchange_rates(request, date=None):
                 status=400,
             )
 
-    exchange_rates = (
-        await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date <= dt.date())
-        .order_by(GinoDBInstance.get_repo().date.desc())
-        .gino.first()
-    )
+    exchange_rates = await GinoDBInstance.get_rates()
     rates = exchange_rates.rates
 
     # Base
     base = BASE_CURRENCY
 
     if "base" in request.args and request.args["base"] != BASE_CURRENCY:
+        # no base currency
         base = request.args["base"][0]
 
         if base in rates:
@@ -120,7 +112,7 @@ async def to_exchange_rates(request, date=None):
             rates = {
                 currency: Decimal(rate) / base_rate for currency, rate in rates.items()
             }
-            rates["EUR"] = Decimal(1) / base_rate
+            rates[BASE_CURRENCY] = Decimal(1) / base_rate
         else:
             return json(
                 {"error": "Base '{}' is not supported.".format(base)}, status=400
@@ -128,6 +120,7 @@ async def to_exchange_rates(request, date=None):
 
     # Symbols
     if "symbols" in request.args:
+        # symbol in args
         symbols = list(
             itertools.chain.from_iterable(
                 [symbol.split(",") for symbol in request.args["symbols"]]
@@ -161,13 +154,6 @@ async def update_rates(historic=False):
     }
 
     data = envelope.findall("./eurofxref:Cube/eurofxref:Cube[@time]", namespaces)
+
     for d in data:
-        time = datetime.strptime(d.attrib["time"], "%Y-%m-%d").date()
-        rates = await GinoDBInstance.get_repo().get(time)
-        if not rates:
-            await GinoDBInstance.get_repo().create(
-                date=time,
-                rates={
-                    c.attrib["currency"]: Decimal(c.attrib["rate"]) for c in list(d)
-                },
-            )
+        await GinoDBInstance.upsert_rates_by_time(d)
