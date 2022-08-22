@@ -11,8 +11,8 @@ from sanic import Sanic
 from sanic.response import json, redirect
 from sqlalchemy.dialects.postgresql import JSONB
 
-from src.constants import HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
-from src.handlers import exchange_rates_history, to_exchange_rates
+from constants import HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
+from handlers import exchange_rates_history, to_exchange_rates
 from utils import parse_database_url, cors
 
 app = Sanic(__name__)

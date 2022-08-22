@@ -1,4 +1,4 @@
 #!/bin/bash
 
-newrelic-admin run-program
-python main.py
+# newrelic-admin run-program
+poetry run python main.py

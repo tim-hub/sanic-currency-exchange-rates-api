@@ -2,10 +2,9 @@ import itertools
 from datetime import datetime
 from decimal import Decimal
 
-import requests
 from sanic import json
 
-from src.constants import BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
+from constants import BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
 
 
 async def exchange_rates_history(request, rateModel):
