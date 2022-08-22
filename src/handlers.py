@@ -2,12 +2,15 @@ import itertools
 from datetime import datetime
 from decimal import Decimal
 
+import requests
+from defusedxml import ElementTree
 from sanic import json
 
-from constants import BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
+from src.constants import BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
+from src.db.gino_db import GinoDBInstance
 
 
-async def exchange_rates_history(request, rateModel):
+async def exchange_rates_history(request):
     if request.method == "HEAD":
         return json("")
 
@@ -34,9 +37,9 @@ async def exchange_rates_history(request, rateModel):
         return json({"error": "missing end_at parameter"})
 
     exchange_rates = (
-        await rateModel.query.where(rateModel.date >= start_at.date())
-        .where(rateModel.date <= end_at.date())
-        .order_by(rateModel.date.asc())
+        await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date >= start_at.date())
+        .where(GinoDBInstance.get_repo().date <= end_at.date())
+        .order_by(GinoDBInstance.get_repo().date.asc())
         .gino.all()
     )
 
@@ -82,7 +85,7 @@ async def exchange_rates_history(request, rateModel):
                  "rates": historic_rates})
 
 
-async def to_exchange_rates(request, rateModel, date=None):
+async def to_exchange_rates(request, date=None):
     if request.method == "HEAD":
         return json("")
 
@@ -100,8 +103,8 @@ async def to_exchange_rates(request, rateModel, date=None):
             )
 
     exchange_rates = (
-        await rateModel.query.where(rateModel.date <= dt.date())
-        .order_by(rateModel.date.desc())
+        await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date <= dt.date())
+        .order_by(GinoDBInstance.get_repo().date.desc())
         .gino.first()
     )
     rates = exchange_rates.rates
@@ -146,3 +149,25 @@ async def to_exchange_rates(request, rateModel, date=None):
     return json(
         {"base": base, "date": exchange_rates.date.strftime("%Y-%m-%d"), "rates": rates}
     )
+
+
+async def update_rates(historic=False):
+    r = requests.get(HISTORIC_RATES_URL if historic else LAST_90_DAYS_RATES_URL)
+    envelope = ElementTree.fromstring(r.content)
+
+    namespaces = {
+        "gesmes": "http://www.gesmes.org/xml/2002-08-01",
+        "eurofxref": "http://www.ecb.int/vocabulary/2002-08-01/eurofxref",
+    }
+
+    data = envelope.findall("./eurofxref:Cube/eurofxref:Cube[@time]", namespaces)
+    for d in data:
+        time = datetime.strptime(d.attrib["time"], "%Y-%m-%d").date()
+        rates = await GinoDBInstance.get_repo().get(time)
+        if not rates:
+            await GinoDBInstance.get_repo().create(
+                date=time,
+                rates={
+                    c.attrib["currency"]: Decimal(c.attrib["rate"]) for c in list(d)
+                },
+            )
