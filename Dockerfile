@@ -16,4 +16,4 @@ RUN poetry install
 ADD src .
 
 RUN ["chmod", "+x", "infra/start.sh"]
-CMD ["infra/start.sh"]
+ENTRYPOINT ["infra/start.sh"]
