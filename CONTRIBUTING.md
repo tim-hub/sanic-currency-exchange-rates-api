@@ -11,3 +11,8 @@
 ```
 docker build -t rate-api . && docker run --name rate-api -t -i -e DATABASE_URL=postgresql://user:pwd@dburl/exchange rate-api 
 ```
+
+# todo Refactor and Improvement
+
+- [ ] unit test
+- [ ] integration test 

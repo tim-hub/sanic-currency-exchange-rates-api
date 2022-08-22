@@ -1,75 +1,37 @@
 import fcntl
-from datetime import datetime
-from decimal import Decimal
 from os import getenv
-import defusedxml.ElementTree as ElementTree
 
-import requests
-import ujson
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sanic import Sanic
 from sanic.response import json, redirect
-from sqlalchemy.dialects.postgresql import JSONB
 
-from constants import HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
-from handlers import exchange_rates_history, to_exchange_rates
-from utils import parse_database_url, cors
+from src.constants import FALLBACK_LOCAL_DB_URL
+from src.db.gino_db import GinoDBInstance
+from src.service import RatesService
+from src.utils import cors, parse_database_url
 
 app = Sanic(__name__)
 
-app.config.update(
-    parse_database_url(
-        url=getenv("DATABASE_URL", "postgresql://localhost/exchangerates")
+if True:
+    app.config.update(
+        parse_database_url(
+            url=getenv("DATABASE_URL", FALLBACK_LOCAL_DB_URL)
+        )
     )
-)
+    rates_service = RatesService(GinoDBInstance)
+else:
+    # init Redis
+    rates_service = RatesService(GinoDBInstance)
 
-# Database
-from gino import Gino
-
-db = Gino()
-
-
-class RateModel(db.Model):
-    __tablename__ = "exchange_rates"
-
-    date = db.Column(db.Date(), primary_key=True)
-    rates = db.Column(JSONB())
-
-    def __repr__(self):
-        return "Rates [{}]".format(self.date)
-
-
-async def update_rates(historic=False):
-    r = requests.get(HISTORIC_RATES_URL if historic else LAST_90_DAYS_RATES_URL)
-    envelope = ElementTree.fromstring(r.content)
-
-    namespaces = {
-        "gesmes": "http://www.gesmes.org/xml/2002-08-01",
-        "eurofxref": "http://www.ecb.int/vocabulary/2002-08-01/eurofxref",
-    }
-
-    data = envelope.findall("./eurofxref:Cube/eurofxref:Cube[@time]", namespaces)
-    for d in data:
-        time = datetime.strptime(d.attrib["time"], "%Y-%m-%d").date()
-        rates = await RateModel.get(time)
-        if not rates:
-            await RateModel.create(
-                date=time,
-                rates={
-                    c.attrib["currency"]: Decimal(c.attrib["rate"]) for c in list(d)
-                },
-            )
+exchange_rates_history = rates_service.exchange_rates_history
+to_exchange_rates = rates_service.to_exchange_rates
+update_rates = rates_service.update_rates
 
 
 @app.listener("before_server_start")
 async def initialize_scheduler(app, loop):
-    await db.set_bind(getenv("DATABASE_URL", "postgresql://localhost/exchangerates"),
-                      json_serializer=ujson.dumps,
-                      json_deserializer=ujson.loads
-                      )
-    # # Check that tables exist
-    await db.gino.create_all()
-    print('set up db')
+    await rates_service.map_to_store()
+
     # Schedule exchangerate updates
     try:
         _ = open("../scheduler.lock", "w")
@@ -82,7 +44,6 @@ async def initialize_scheduler(app, loop):
         scheduler.add_job(update_rates, "interval", hours=1)
 
         # Fill up database with rates
-        count = await db.func.count(RateModel.date).gino.scalar()
         scheduler.add_job(update_rates, kwargs={"historic": True})
         print('set up scheduler for fetch rates')
     except BlockingIOError:
@@ -104,37 +65,37 @@ async def force_naked_domain(request):
 @app.route("/latest", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, RateModel, date)
+    return await to_exchange_rates(request, date)
 
 
 @app.route("/<date>", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, RateModel, date)
+    return await to_exchange_rates(request, date)
 
 
 @app.route("/api/latest", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, RateModel, date)
+    return await to_exchange_rates(request, date)
 
 
 @app.route("/api/<date>", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, RateModel, date)
+    return await to_exchange_rates(request, date)
 
 
 @app.route("/history", methods=["GET", "HEAD"])
 @cors()
 async def exchange_history(request):
-    return await exchange_rates_history(request, RateModel)
+    return await exchange_rates_history(request)
 
 
 @app.route("/api/history", methods=["GET", "HEAD"])
 @cors()
 async def exchange_history(request):
-    return await exchange_rates_history(request, RateModel)
+    return await exchange_rates_history(request)
 
 
 # api.ExchangeratesAPI.io

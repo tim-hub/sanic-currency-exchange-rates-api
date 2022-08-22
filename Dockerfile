@@ -13,7 +13,7 @@ ADD pyproject.toml .
 RUN pip install --no-cache-dir poetry
 RUN poetry install
 
-ADD src .
+ADD src ./src
 
-RUN ["chmod", "+x", "infra/start.sh"]
-ENTRYPOINT ["infra/start.sh"]
+RUN ["chmod", "+x", "src/infra/start.sh"]
+ENTRYPOINT ["src/infra/start.sh"]

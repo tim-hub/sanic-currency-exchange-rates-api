@@ -15,14 +15,14 @@ Make sure docker is installed.
 This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the original project is great,
  but as a project, is seems like they have some outdated dependencies (security issues) and difficulties to deploy.
 
-|   Difference                  | Original                                |  Fork|
-| ------------------- | --------------------------------------- | --------------------------------- |
-| sanic version       | 0.8.x                                   | latest/19.12.2                    |
-| python              | 3.6                                     | 3.7                               |
-| pin dependencies    | false                                   | true                              |
-| deploy to heroku    | one click                               | (can be too)                      |
-| deploy as container | got some problem | easy                              |
-| xml parser          | xml.etree                               | defusedxml                        |
+|   Difference                  | Original                                | Fork          |
+| ------------------- | --------------------------------------- |---------------|
+| sanic version       | 0.8.x                                   | latest |
+| python              | 3.6                                     | 3.10          |
+| pin dependencies    | false                                   | true          |
+| deploy to heroku    | one click                               | (can be too)  |
+| deploy as container | got some problem | easy          |
+| xml parser          | xml.etree                               | defusedxml    |
 
 
 
