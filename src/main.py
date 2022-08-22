@@ -7,7 +7,7 @@ from sanic.response import json, redirect
 
 from src.constants import FALLBACK_LOCAL_DB_URL
 from src.db.gino_db import GinoDBInstance
-from src.handlers import exchange_rates_history, to_exchange_rates, update_rates
+from src.service import RatesService
 from src.utils import cors, parse_database_url
 
 app = Sanic(__name__)
@@ -18,20 +18,19 @@ if True:
             url=getenv("DATABASE_URL", FALLBACK_LOCAL_DB_URL)
         )
     )
+    rates_service = RatesService(GinoDBInstance)
 else:
     # init Redis
-    pass
+    rates_service = RatesService(GinoDBInstance)
 
-
-
-GinoDBInstance.self_init()
-
-
+exchange_rates_history = rates_service.exchange_rates_history
+to_exchange_rates = rates_service.to_exchange_rates
+update_rates = rates_service.update_rates
 
 
 @app.listener("before_server_start")
 async def initialize_scheduler(app, loop):
-    await GinoDBInstance.self_bind()
+    await rates_service.map_to_store()
 
     # Schedule exchangerate updates
     try:

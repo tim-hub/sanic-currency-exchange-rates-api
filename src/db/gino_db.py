@@ -32,7 +32,7 @@ class GinoDBInstance:
         GinoDBInstance.repo = RateRepo
 
     @staticmethod
-    async def self_bind():
+    async def map_to_store():
         await GinoDBInstance.db.set_bind(getenv("DATABASE_URL", FALLBACK_LOCAL_DB_URL),
                                          json_serializer=ujson.dumps,
                                          json_deserializer=ujson.loads
