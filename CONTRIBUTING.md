@@ -2,7 +2,7 @@
 
 0. python 3.7
 0. export DATABASE_URL = 'psql url'
-1. pip install -r requirements.txt
+1. `cat requirements.txt | xargs poetry add` 
 2. python main.py 
 
 
