@@ -20,3 +20,5 @@ ujson = "^5.4.0"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+start = "src:main"

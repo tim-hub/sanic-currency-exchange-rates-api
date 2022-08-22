@@ -2,7 +2,7 @@ import fcntl
 from datetime import datetime
 from decimal import Decimal
 from os import getenv
-from xml.etree import ElementTree
+import defusedxml.ElementTree as ElementTree
 
 import requests
 import ujson

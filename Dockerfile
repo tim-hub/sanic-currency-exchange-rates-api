@@ -7,10 +7,10 @@ RUN mkdir /exchange_api
 WORKDIR /exchange_api
 
 # Copying requirements
-ADD src/poetry.lock .
-ADD src/pyproject.toml .
+ADD poetry.lock .
+ADD pyproject.toml .
 
-RUN pip install poetry
+RUN pip install --no-cache-dir poetry
 RUN poetry install
 
 ADD src .
