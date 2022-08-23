@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "0588b24b-aea5-45ec-9b51-7809b7f08831",
+		"name": "sanic currency exchange api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get latest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"date\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Base is EUR\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"EUR\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR not in rates\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['EUR']).to.to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"AUD in a range\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['AUD']).to.lessThan(2);",
+							"    pm.expect(jsonData.rates['AUD']).to.greaterThan(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/latest",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"latest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get 2020-01-02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"date\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test('Date is correct', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.date).to.equal(\"2020-01-02\");",
+							"});",
+							"",
+							"pm.test(\"Base is EUR\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"EUR\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR not in rates\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['EUR']).to.to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"AUD in a range\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['AUD']).to.lessThan(2);",
+							"    pm.expect(jsonData.rates['AUD']).to.greaterThan(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/2020-01-02",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"2020-01-02"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get 2020-01-01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"date\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test('Date is correct', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.date).to.equal(\"2019-12-31\");",
+							"});",
+							"",
+							"pm.test(\"Base is EUR\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"EUR\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR not in rates\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['EUR']).to.to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"AUD in a range\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['AUD']).to.lessThan(2);",
+							"    pm.expect(jsonData.rates['AUD']).to.greaterThan(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/2020-01-01",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"2020-01-01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history 2020-01-01 2020-01-15",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"start_at\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"end_at\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Base is EUR\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"EUR\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR not in rates, in 2020-01-02\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['2020-01-02']['EUR']).to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"Record exist in 2020-01-15\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['2020-01-15']['EUR']).to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"AUD in a range in 2020-01-02\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['2020-01-02']['AUD']).to.lessThan(2);",
+							"    pm.expect(jsonData.rates['2020-01-02']['AUD']).to.greaterThan(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/history?start_at=2020-01-01&end_at=2020-01-15&base=EUR",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"history"
+					],
+					"query": [
+						{
+							"key": "start_at",
+							"value": "2020-01-01"
+						},
+						{
+							"key": "end_at",
+							"value": "2020-01-15"
+						},
+						{
+							"key": "base",
+							"value": "EUR"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get latest (USD)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"date\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Base is USD\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"USD\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR in rates\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['EUR']).to.exist;",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/latest?base=USD",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"latest"
+					],
+					"query": [
+						{
+							"key": "base",
+							"value": "USD"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get latest (EUR)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"base\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"date\": {",
+							"        \"type\": \"string\"",
+							"    },",
+							"    \"rates\": {",
+							"        \"type\": \"object\"",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Base is EUR\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.base).to.equal(\"EUR\");",
+							"})",
+							"",
+							"pm.test(\"Rates not empty\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates).to.be.not.empty;",
+							"",
+							"})",
+							"",
+							"pm.test(\"EUR not in rates\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['EUR']).to.to.not.exist;",
+							"",
+							"})",
+							"",
+							"pm.test(\"AUD in a range\", function() {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.rates['AUD']).to.lessThan(2);",
+							"    pm.expect(jsonData.rates['AUD']).to.greaterThan(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/latest?base=EUR",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"latest"
+					],
+					"query": [
+						{
+							"key": "base",
+							"value": "EUR"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

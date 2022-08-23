@@ -71,8 +71,8 @@ class GinoDBInstance:
 
 
     @staticmethod
-    async def get_rates():
-        dt = datetime.now()
+    async def get_rates(dt = None):
+        dt = datetime.utcnow() if dt == None else dt
         exchange_rates = (
             await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date <= dt.date())
             .order_by(GinoDBInstance.get_repo().date.desc())
