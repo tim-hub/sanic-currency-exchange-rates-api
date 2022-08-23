@@ -14,7 +14,11 @@ from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange
 
 ## Usage
 
-#### Lates & specific date rates
+> Latest date will be returned, if the date was not in Euro Central Bank history records
+
+#### Latest & specific date rates
+
+
 
 Get the latest foreign exchange rates.
 

@@ -2,6 +2,6 @@ HISTORIC_RATES_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.x
 LAST_90_DAYS_RATES_URL = (
     "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml"
 )
-BASE_CURRENCY='USD'
+DEFAULT_BASE_CURRENCY= 'EUR'
 
 FALLBACK_LOCAL_DB_URL = "postgresql://localhost/exchangerates"

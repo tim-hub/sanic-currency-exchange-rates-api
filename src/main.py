@@ -62,25 +62,32 @@ async def force_naked_domain(request):
         return redirect(request.url.replace("www.", "", 1), status=301)
 
 
-@app.route("/latest", methods=["GET", "HEAD"])
-@cors()
-async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, date)
-
-
-@app.route("/<date>", methods=["GET", "HEAD"])
-@cors()
-async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, date)
-
-
 @app.route("/api/latest", methods=["GET", "HEAD"])
 @cors()
-async def exchange_rates(request, date=None):
-    return await to_exchange_rates(request, date)
+async def exchange_rates(request):
+    return await to_exchange_rates(request)
 
 
 @app.route("/api/<date>", methods=["GET", "HEAD"])
+@cors()
+async def exchange_rates(request, date=None):
+    print(date)
+    return await to_exchange_rates(request, date)
+
+
+@app.route("/api/history", methods=["GET", "HEAD"])
+@cors()
+async def exchange_history(request):
+    return await exchange_rates_history(request)
+
+
+@app.route("/latest", methods=["GET", "HEAD"])
+@cors()
+async def exchange_rates(request):
+    return await to_exchange_rates(request)
+
+
+@app.route("/<date>", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
     return await to_exchange_rates(request, date)
@@ -92,13 +99,6 @@ async def exchange_history(request):
     return await exchange_rates_history(request)
 
 
-@app.route("/api/history", methods=["GET", "HEAD"])
-@cors()
-async def exchange_history(request):
-    return await exchange_rates_history(request)
-
-
-# api.ExchangeratesAPI.io
 @app.route("/", methods=["GET"])
 async def index(request):
     home = {
@@ -106,37 +106,37 @@ async def index(request):
             {
                 "description": "Get the latest foreign exchange rates.",
                 "type": "GET",
-                "url": "/latest"
+                "url": "/api/latest"
             },
             {
                 "description": "Get historical rates for any day since 1999-01-04.",
                 "type": "GET",
-                "url": "/2018-03-26"
+                "url": "/api/2018-03-26"
             },
             {
                 "description": "Rates are quoted against the Euro by default. Quote against a different currency by setting the base parameter in your request.",
                 "type": "GET",
-                "url": "/latest?base=USD"
+                "url": "/api/latest?base=USD"
             },
             {
                 "description": "Request specific exchange rates by setting the symbols parameter.",
                 "type": "GET",
-                "url": "/latest?symbols=USD,GBP"
+                "url": "/api/latest?symbols=USD,GBP"
             },
             {
                 "description": "Get historical rates for a time period.",
                 "type": "GET",
-                "url": "/history?start_at=2018-01-01&end_at=2018-09-01"
+                "url": "/api/history?start_at=2018-01-01&end_at=2018-09-01"
             },
             {
                 "description": "Limit results to specific exchange rates to save bandwidth with the symbols parameter.",
                 "type": "GET",
-                "url": "/history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,JPY"
+                "url": "/api/history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,JPY"
             },
             {
                 "description": "Quote the historical rates against a different currency.",
                 "type": "GET",
-                "url": "/history?start_at=2018-01-01&end_at=2018-09-01&base=USD"
+                "url": "/api/history?start_at=2018-01-01&end_at=2018-09-01&base=USD"
             }
         ],
 
