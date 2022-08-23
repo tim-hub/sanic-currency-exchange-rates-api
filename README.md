@@ -23,26 +23,26 @@ from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange
 Get the latest foreign exchange rates.
 
 ```http
-GET /latest
+GET /api/latest
 ```
 
 Get historical rates for any day since 1999.
 
 ```http
-GET /2018-03-26
+GET /api/2018-03-26
 ```
 
 Rates are quoted against the Euro by default. Quote against a different currency by setting the base parameter in your
 request.
 
 ```http
-GET /latest?base=USD
+GET /api/latest?base=USD
 ```
 
 Request specific exchange rates by setting the symbols parameter.
 
 ```http
-GET /latest?symbols=USD,GBP
+GET /api/latest?symbols=USD,GBP
 ```
 
 #### Rates history
@@ -50,19 +50,19 @@ GET /latest?symbols=USD,GBP
 Get historical rates for a time period.
 
 ```http
-GET /history?start_at=2018-01-01&end_at=2018-09-01
+GET /api/history?start_at=2018-01-01&end_at=2018-09-01
 ```
 
 Limit results to specific exchange rates to save bandwidth with the symbols parameter.
 
 ```http
-GET /history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,JPY
+GET /api/history?start_at=2018-01-01&end_at=2018-09-01&symbols=ILS,JPY
 ```
 
 Quote the historical rates against a different currency.
 
 ```http
-GET /history?start_at=2018-01-01&end_at=2018-09-01&base=USD
+GET /api/history?start_at=2018-01-01&end_at=2018-09-01&base=USD
 ```
 
 #### Client side usage
