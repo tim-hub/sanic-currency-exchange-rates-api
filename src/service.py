@@ -8,7 +8,9 @@ from sanic import json
 
 from src.constants import DEFAULT_BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
 
-
+'''
+This service logic require refactoring
+'''
 class RatesService:
 
     def __init__(self, db_instance):
@@ -24,7 +26,7 @@ class RatesService:
 
         if "start_at" in request.args and len(request.args["start_at"]) > 0:
             try:
-                start_at = datetime.strptime(request.args["start_at"][0], "%Y-%m-%d")
+                start_at = datetime.strptime(request.args["start_at"][0], "%Y-%m-%date")
             except ValueError as e:
                 return json(
                     {"error": "start_at parameter format", "exception": "{}".format(e)},
@@ -35,7 +37,7 @@ class RatesService:
 
         if "end_at" in request.args and len(request.args["end_at"]) > 0:
             try:
-                end_at = datetime.strptime(request.args["end_at"][0], "%Y-%m-%d")
+                end_at = datetime.strptime(request.args["end_at"][0], "%Y-%m-%date")
             except ValueError as e:
                 return json(
                     {"error": "end_at parameter format", "exception": "{}".format(e)},
@@ -95,7 +97,7 @@ class RatesService:
         formated_date = datetime.utcnow()
         if date:
             try:
-                formated_date = datetime.strptime(date, "%Y-%m-%d")
+                formated_date = datetime.strptime(date, "%Y-%m-%date")
             except ValueError as e:
                 return json({"error": "{}".format(e)}, status=400)
 
@@ -156,7 +158,7 @@ class RatesService:
                 )
 
         return json(
-            {"base": base_currency, "date": exchange_rates.date.strftime("%Y-%m-%d"), "rates": rates}
+            {"base": base_currency, "date": exchange_rates.date.strftime("%Y-%m-%date"), "rates": rates}
         )
 
     async def update_rates(self, historic=False):
