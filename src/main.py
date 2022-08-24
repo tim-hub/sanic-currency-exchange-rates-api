@@ -14,8 +14,10 @@ from src.utils import cors, parse_database_url
 app = Sanic(__name__)
 
 if getenv('USE_REDIS', False):
+    print('use redis stack as store')
     rates_service = RatesService(RedisStackInstance)
 else:
+    print('use postgres as store')
     app.config.update(
         parse_database_url(
             url=getenv("DATABASE_URL", FALLBACK_LOCAL_DB_URL)
