@@ -15,6 +15,7 @@
     "redis_features": ["json","document","cache"],
     "redis_modules": ["RedisJson"],
     "app_image_urls": [
+        "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ulzcyaphvmzn4tgga04a.png",
         "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f661ebfetdrhnsd9ej6a.png"
     ],
     "youtube_url": "",
