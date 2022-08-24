@@ -1,0 +1,24 @@
+{
+    "app_name": "Sanic Currency Exchange Rates Api",
+    "description": "a self hosted, free, currency exchange rate api",
+    "hidden": false,
+    "rank": 21,
+    "type": "Building Block",
+    "contributed_by": "Community",
+    "repo_url": "https://github.com/tim-hub/sanic-currency-exchange-rates-api",
+    "download_url": "https://github.com/users/tim-hub/packages/container/package/sanic-currency-exchange-rates-api",
+    "hosted_url": "https://exchange-rate.bai.uno/",
+    "quick_deploy": "false",
+    "deploy_buttons": [],
+    "language": ["Python", "JavaScript"],
+    "redis_commands": ["SET", "GET", "json"],
+    "redis_features": ["json","document","cache"],
+    "redis_modules": ["RedisJson"],
+    "app_image_urls": [
+        "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f661ebfetdrhnsd9ej6a.png"
+    ],
+    "youtube_url": "",
+    "special_tags": ["Hackathon","Compare","Postgres","Relations","Document","RESTful API"],
+    "verticals": ["Technology", "Financial"],
+    "markdown": "https://github.com/tim-hub/sanic-currency-exchange-rates-api/blob/master/README.md"
+}
