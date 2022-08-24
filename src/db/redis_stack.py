@@ -10,14 +10,14 @@ from src.db.db_interface import AbstractDBInstace
 ONE_DAY = timedelta(days=1)
 
 
-class RedisStackInstance(AbstractDBInstace):
+class RedisStackRepo(AbstractDBInstace):
     db = None
     jsonDB = None
 
     @staticmethod
     def self_init():
-        RedisStackInstance.db = redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379'))
-        RedisStackInstance.jsonDB = RedisStackInstance.db.json()
+        RedisStackRepo.db = redis.from_url(getenv('REDIS_URL', 'redis://localhost:6379'))
+        RedisStackRepo.jsonDB = RedisStackRepo.db.json()
 
     @staticmethod
     async def map_to_store():
@@ -26,7 +26,7 @@ class RedisStackInstance(AbstractDBInstace):
     @staticmethod
     def get_single_rate(dt):
         date = dt.strftime("%Y-%m-%d")
-        rates = RedisStackInstance.jsonDB.get(date, '$')
+        rates = RedisStackRepo.jsonDB.get(date, '$')
         if rates and len((rates)) == 1:
             return dict([a, Decimal(x)] for a, x in rates[0].items())
         else:
@@ -38,7 +38,7 @@ class RedisStackInstance(AbstractDBInstace):
         results = []
 
         while the_date <= end_at:
-            day_rates = RedisStackInstance.get_single_rate(the_date)
+            day_rates = RedisStackRepo.get_single_rate(the_date)
             if day_rates:
                 results.append({
                     'date': the_date.date(),
@@ -51,10 +51,10 @@ class RedisStackInstance(AbstractDBInstace):
     @staticmethod
     async def get_rates(dt):
         checking_date = dt
-        rates = RedisStackInstance.get_single_rate(checking_date)
+        rates = RedisStackRepo.get_single_rate(checking_date)
         while not rates:
             checking_date = checking_date - ONE_DAY
-            rates = RedisStackInstance.get_single_rate(checking_date)
+            rates = RedisStackRepo.get_single_rate(checking_date)
 
         return {
             'date': checking_date.date(),
@@ -64,10 +64,10 @@ class RedisStackInstance(AbstractDBInstace):
     @staticmethod
     async def upsert_rates_by_time(ratesData):
         time = datetime.strptime(ratesData.attrib["time"], "%Y-%m-%d")
-        rates = RedisStackInstance.jsonDB.get(ratesData.attrib["time"])
+        rates = RedisStackRepo.jsonDB.get(ratesData.attrib["time"])
 
         if not rates:
-            RedisStackInstance.jsonDB.set(
+            RedisStackRepo.jsonDB.set(
                 time.date().strftime("%Y-%m-%d"),
                 '$',
                 {

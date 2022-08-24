@@ -9,8 +9,7 @@ The current and historical foreign exchange rates data are
 from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html)
 .
 
-> Developing Plan - [Redis Stack vs Postgres](docs/Redis-Stack.md)
-
+- More about [Redis Stack](docs/redis.md)
 
 ## Usage
 
@@ -82,15 +81,8 @@ fetch('https://api.exchangeratesapi.io/latest')
   .then(demo)
 ```
 
-## How to
 
-Make sure docker is installed.
-
-- `git clone https://github.com/tim-hub/sanic-currency-exchange-rates-api`
-- run
-  docker `docker build -t rate-api . && docker run --name rate-api -t -i -e DATABASE_URL=postgresql://dbuser:pwd@dburl:5432/dbname rate-api`
-
-## Why a new fork
+## Why we need a new fork
 
 This project is a fork from [ExchangeRatesApi project](https://github.com/exchangeratesapi/exchangeratesapi/), the
 original project is great,
@@ -107,8 +99,8 @@ but as a project, is seems like they have some outdated dependencies (security i
 
 ## Contributing
 
-[contributing guide](CONTRIBUTING.md)
+- [contributing guide](CONTRIBUTING.md)
 
 ## License
 
-MIT
+- [MIT](LICENSE)
