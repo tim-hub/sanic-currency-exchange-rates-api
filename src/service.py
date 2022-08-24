@@ -6,7 +6,11 @@ import requests
 from defusedxml import ElementTree
 from sanic import json
 
-from src.constants import DEFAULT_BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL
+from src.constants import DEFAULT_BASE_CURRENCY, HISTORIC_RATES_URL, LAST_90_DAYS_RATES_URL, EARLIEST_DATE
+
+'''
+This service logic require refactoring
+'''
 
 
 class RatesService:
@@ -49,7 +53,7 @@ class RatesService:
         base = DEFAULT_BASE_CURRENCY
         historic_rates = {}
         for er in exchange_rates:
-            rates = er.rates
+            rates = er['rates']
 
             if "base" in request.args and request.args["base"][0] != DEFAULT_BASE_CURRENCY:
                 base = request.args["base"][0]
@@ -82,7 +86,7 @@ class RatesService:
                         status=400,
                     )
 
-            historic_rates[er.date] = rates
+            historic_rates[er['date']] = rates
 
         return json({"base": base, "start_at": start_at.date().isoformat(), "end_at": end_at.date().isoformat(),
                      "rates": historic_rates})
@@ -92,14 +96,14 @@ class RatesService:
             return json("")
 
         # date pre check
-        formated_date = datetime.utcnow()
+        checking_date = datetime.utcnow()
         if date:
             try:
-                formated_date = datetime.strptime(date, "%Y-%m-%d")
+                checking_date = datetime.strptime(date, "%Y-%m-%d")
             except ValueError as e:
                 return json({"error": "{}".format(e)}, status=400)
 
-            if formated_date < datetime(1999, 1, 4):
+            if checking_date < EARLIEST_DATE:
                 return json(
                     {"error": "There is no data for dates older then 1999-01-04."},
                     status=400,
@@ -116,8 +120,8 @@ class RatesService:
                 {"error": "Only One Base Currency is not supported."}, status=400
             )
 
-        exchange_rates = await self.db_instance.get_rates(formated_date)
-        rates = exchange_rates.rates
+        exchange_rates = await self.db_instance.get_rates(checking_date)
+        rates = exchange_rates['rates']
 
         # base post check
         if base_currency != DEFAULT_BASE_CURRENCY and base_currency not in rates:
@@ -149,14 +153,14 @@ class RatesService:
                 return json(
                     {
                         "error": "Symbols '{}' are invalid for date {}.".format(
-                            ",".join(symbols), formated_date.date()
+                            ",".join(symbols), checking_date.date()
                         )
                     },
                     status=400,
                 )
 
         return json(
-            {"base": base_currency, "date": exchange_rates.date.strftime("%Y-%m-%d"), "rates": rates}
+            {"base": base_currency, "date": exchange_rates['date'].strftime("%Y-%m-%d"), "rates": rates}
         )
 
     async def update_rates(self, historic=False):

@@ -8,11 +8,10 @@ from gino import Gino
 from sqlalchemy.dialects.postgresql import JSONB
 
 from src.constants import FALLBACK_LOCAL_DB_URL
+from src.db.db_interface import AbstractDBInstace
 
 
-
-
-class GinoDBInstance:
+class GinoDBInstance(AbstractDBInstace):
     db = None
     repo = None
 
@@ -37,19 +36,9 @@ class GinoDBInstance:
                                          json_serializer=ujson.dumps,
                                          json_deserializer=ujson.loads
                                          )
-        # # Check that tables exist
+        # Check that tables exist
         await GinoDBInstance.db.gino.create_all()
         print('set up db')
-
-
-
-    @staticmethod
-    def get_db():
-        if (GinoDBInstance.db):
-            return GinoDBInstance.db
-        else:
-            GinoDBInstance.db = Gino()
-
 
     @staticmethod
     def get_repo():
@@ -57,7 +46,6 @@ class GinoDBInstance:
             return GinoDBInstance.repo
         else:
             print("error no repo")
-
 
     @staticmethod
     async def get_historic_rates(start_at, end_at):
@@ -67,34 +55,28 @@ class GinoDBInstance:
             .order_by(GinoDBInstance.get_repo().date.asc())
             .gino.all()
         )
-        return exchange_rates
-
+        return map(lambda x: {'date': x.date, 'rates': x.rates}, exchange_rates)
 
     @staticmethod
-    async def get_rates(dt = None):
-        dt = datetime.utcnow() if dt == None else dt
+    async def get_rates(dt):
         exchange_rates = (
             await GinoDBInstance.get_repo().query.where(GinoDBInstance.get_repo().date <= dt.date())
             .order_by(GinoDBInstance.get_repo().date.desc())
             .gino.first()
         )
-        return exchange_rates
-
-
-    @staticmethod
-    async def get_rates_by_time(time):
-        return await GinoDBInstance.get_repo().get(time)
+        return {
+            'date': exchange_rates.date,
+            'rates': exchange_rates.rates
+        }
 
     @staticmethod
-    async def upsert_rates_by_time(d):
-        time = datetime.strptime(d.attrib["time"], "%Y-%m-%d").date()
-        rates = await GinoDBInstance.get_rates_by_time(time)
+    async def upsert_rates_by_time(ratesData):
+        time = datetime.strptime(ratesData.attrib["time"], "%Y-%m-%d").date()
+        rates = await GinoDBInstance.get_repo().get(time)
         if not rates:
             await GinoDBInstance.get_repo().create(
                 date=time,
                 rates={
-                    c.attrib["currency"]: Decimal(c.attrib["rate"]) for c in list(d)
+                    c.attrib["currency"]: Decimal(c.attrib["rate"]) for c in list(ratesData)
                 },
             )
-
-

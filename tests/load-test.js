@@ -11,7 +11,7 @@ export const options = {
 
 export default function () {
 
-  const res = http.get('https://httpbin.test.k6.io/')
+  const res = http.get('http://127.0.0.1:8000/api/latest')
 
   check(res, { 'status was 200': (r) => r.status === 200 })
 

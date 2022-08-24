@@ -7,20 +7,22 @@ from sanic.response import json, redirect
 
 from src.constants import FALLBACK_LOCAL_DB_URL
 from src.db.gino_db import GinoDBInstance
+from src.db.redis_stack import RedisStackInstance
 from src.service import RatesService
 from src.utils import cors, parse_database_url
 
 app = Sanic(__name__)
 
-if True:
+if getenv('USE_REDIS', False):
+    print('use redis stack as store')
+    rates_service = RatesService(RedisStackInstance)
+else:
+    print('use postgres as store')
     app.config.update(
         parse_database_url(
             url=getenv("DATABASE_URL", FALLBACK_LOCAL_DB_URL)
         )
     )
-    rates_service = RatesService(GinoDBInstance)
-else:
-    # init Redis
     rates_service = RatesService(GinoDBInstance)
 
 exchange_rates_history = rates_service.exchange_rates_history
@@ -71,7 +73,6 @@ async def exchange_rates(request):
 @app.route("/api/<date>", methods=["GET", "HEAD"])
 @cors()
 async def exchange_rates(request, date=None):
-    print(date)
     return await to_exchange_rates(request, date)
 
 
