@@ -1,5 +1,5 @@
 # How to run locally
-- [Redis Stack Store](docs/redis.md)
+- [Redis Stack Store](README.md)
 
 
 Make sure docker is installed.
