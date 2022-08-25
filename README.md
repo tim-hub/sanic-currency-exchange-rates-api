@@ -72,12 +72,9 @@ postgres gives better performance, and the way of `Decimal Convert` and `Loop of
 
 
 
-## Play around
 
 
-```bash
-docker run --name rate-api -p 8000:8000 -e REDIS_URL=redis://your-remote-redis:6379 -e USE_REDIS=1  ghcr.io/tim-hub/sanic-currency-exchange-rates-api:v2.3.0
-```
+
 
 ## How to run it locally?
 
@@ -86,7 +83,7 @@ docker run --name rate-api -p 8000:8000 -e REDIS_URL=redis://your-remote-redis:6
 
 - python 3.10
 - poetry >1.0
-- redis stack  (RedisJSON 2)
+- redis stack, please make sure you have a remote Redis Instance running, feel free to get one free from  [Redis Stack database in the cloud](https://developer.redis.com/create/rediscloud).
 - docker 20.10.xx (optional)
 
 
@@ -105,6 +102,14 @@ docker run --name rate-api -p 8000:8000 -e REDIS_URL=redis://your-remote-redis:6
 #### Through Docker 
 
 `docker build -t rate-api . && docker run --name rate-api -t -i -e REDIS_URL=redis://your-remote-redis:6379 -e USE_REDIS=1 rate-api`
+
+or 
+
+Use a docker image.
+
+```bash
+docker run --name rate-api -p 8000:8000 -e REDIS_URL=redis://your-remote-redis:6379 -e USE_REDIS=1  ghcr.io/tim-hub/sanic-currency-exchange-rates-api:v2.3.0
+```
 
 ### Others
 - How to Use Postgres DB at [Contributing](CONTRIBUTING.md)
