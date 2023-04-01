@@ -5,7 +5,7 @@
 
 ![stack change](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f661ebfetdrhnsd9ej6a.png)
 
-- [README](../README.md)
+- [README](./README.md)
 - [Contributing](CONTRIBUTING.md) 
 
 ## How it works
