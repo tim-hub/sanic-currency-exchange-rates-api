@@ -93,7 +93,7 @@ but as a project, is seems like they have some outdated dependencies (security i
 | sanic version       | 0.8.x                                   | latest |
 | python              | 3.6                                     | 3.10          |
 | pin dependencies    | false                                   | true          |
-| deploy to heroku    | one click                               | (can be too)  |
+| deploy to heroku    | one click                               | not one click yet, but it could be deployed to heroku easily through the docker image|
 | deploy as container | got some problem | easy          |
 | xml parser          | xml.etree                               | defusedxml    |
 
