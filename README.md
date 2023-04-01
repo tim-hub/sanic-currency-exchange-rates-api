@@ -9,7 +9,7 @@ The current and historical foreign exchange rates data are
 from [European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html)
 .
 
-- More about [Redis Stack](README.md)
+- More about [Redis Stack](REDIS_STACK.md)
 
 ## Usage
 
